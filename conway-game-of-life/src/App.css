@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  background-color: #1d1f21;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  flex-direction: column;
+}
+
+canvas {
+  border: 2px solid #61dafb;
+  background-color: #282c34;
+  display: block;
+  margin: 20px auto;
+}
+
+
+h1 {
+  color: #61dafb;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  margin: 0;
+  font-size: 24px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #61dafb;
+  color: #282c34;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #4aaedb;
+}
