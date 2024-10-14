@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conway's Game of Life</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #1d1f21;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        canvas {
+            display: block;
+            border: 2px solid #61dafb;
+            background-color: #282c34;
+        }
+        h1 {
+            color: #61dafb;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            margin: 0;
+            font-size: 24px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #61dafb;
+            color: #282c34;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #4aaedb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Conway's Game of Life</h1>
+    <canvas id="gameCanvas"></canvas>
+    <button id="resetButton">Start New Simulation</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let cellSize = 4;
+        let cols, rows;
+        let grid;
+        let animationId;
+
+        // Initialize canvas size
+        function initCanvas() {
+            canvas.width = window.innerWidth - 40;
+            canvas.height = window.innerHeight - 100;
+            cols = Math.floor(canvas.width / cellSize);
+            rows = Math.floor(canvas.height / cellSize);
+        }
+
+        // Create empty grid
+        function createGrid() {
+            let arr = new Array(cols);
+            for (let i = 0; i < cols; i++) {
+                arr[i] = new Array(rows).fill(0);
+            }
+            return arr;
+        }
+
+        // Randomize grid with initial live cells
+        function randomizeGrid() {
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    grid[i][j] = Math.random() < 0.2 ? 1 : 0;
+                }
+            }
+        }
+
+        // Draw the grid on the canvas
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#61dafb';
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    if (grid[i][j] === 1) {
+                        ctx.fillRect(i * cellSize, j * cellSize, cellSize - 1, cellSize - 1);
+                    }
+                }
+            }
+        }
+
+        // Count live neighbors
+        function countNeighbors(grid, x, y) {
+            let sum = 0;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    let col = (x + i + cols) % cols;
+                    let row = (y + j + rows) % rows;
+                    sum += grid[col][row];
+                }
+            }
+            sum -= grid[x][y];
+            return sum;
+        }
+
+        // Apply the rules of the Game of Life
+        function updateGrid() {
+            let newGrid = createGrid();
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let state = grid[i][j];
+                    let neighbors = countNeighbors(grid, i, j);
+
+                    if (state === 0 && neighbors === 3) {
+                        newGrid[i][j] = 1; // Cell becomes alive
+                    } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+                        newGrid[i][j] = 0; // Cell dies
+                    } else {
+                        newGrid[i][j] = state; // Cell stays in its current state
+                    }
+                }
+            }
+
+            grid = newGrid;
+            drawGrid();
+        }
+
+        // Start a new game
+        function startNewGame() {
+            grid = createGrid();
+            randomizeGrid();
+            cancelAnimationFrame(animationId);  // Stop any ongoing animation
+            gameLoop();  // Start the game loop
+        }
+
+        // Animation loop
+        function gameLoop() {
+            updateGrid();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        // Initialize everything
+        function initializeGame() {
+            initCanvas();
+            drawGrid();
+        }
+
+        // Event listener for the button to reset the game
+        document.getElementById('resetButton').addEventListener('click', startNewGame);
+
+        window.addEventListener('resize', () => {
+            initCanvas();
+            drawGrid();
+        });
+
+        initializeGame();
+    </script>
+</body>
+</html>
