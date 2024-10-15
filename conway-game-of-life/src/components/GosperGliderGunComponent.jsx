@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import GameOfLifeEngine from '../engine/GameOfLifeEngine'; // Reuse the engine
 
-function GosperGliderGun() {
+const GosperGliderGunComponent = () => {
   const canvasRef = useRef(null);
   const [engine, setEngine] = useState(null);
 
@@ -33,7 +33,6 @@ function GosperGliderGun() {
   }, []);
 
   const setupGosperGliderGun = (grid) => {
-    // Coordinates for the Gosper Glider Gun
     const gun = [
       [1, 5], [1, 6], [2, 5], [2, 6],
       [11, 5], [11, 6], [11, 7], [12, 4], [12, 8], [13, 3], [13, 9], [14, 3], [14, 9],
@@ -58,20 +57,19 @@ function GosperGliderGun() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900">
-      <h1 className="text-3xl text-blue-400 mb-4">Gosper Glider Gun Simulation</h1>
+    <div className="flex flex-col items-center justify-center">
       <canvas 
         ref={canvasRef} 
         className="border-2 border-blue-400 bg-gray-800 mx-auto my-5"
       ></canvas>
       <button 
         onClick={startNewGame} 
-        className="mt-3 mb-10 px-6 py-3 text-lg bg-blue-400 text-gray-900 rounded hover:bg-blue-300"
+        className="mt-3 px-6 py-3 text-lg bg-blue-400 text-gray-900 rounded hover:bg-blue-300"
       >
         Start New Simulation
       </button>
     </div>
   );
-}
+};
 
-export default GosperGliderGun;
+export default GosperGliderGunComponent;
