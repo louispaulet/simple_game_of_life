@@ -70,17 +70,22 @@ class GameOfLifeEngine {
   }
 
   countNeighbors(x, y) {
-    let sum = 0;
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        let col = (x + i + this.cols) % this.cols;
-        let row = (y + j + this.rows) % this.rows;
+  let sum = 0;
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) {
+      let col = x + i;
+      let row = y + j;
+
+      // Skip counting neighbors outside the grid boundaries
+      if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
         sum += this.grid[col][row];
       }
     }
-    sum -= this.grid[x][y];
-    return sum;
   }
+  sum -= this.grid[x][y]; // Subtract the cell itself from the neighbor count
+  return sum;
+}
+
 
   gameLoop() {
     this.updateGrid();
