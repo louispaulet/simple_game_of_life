@@ -13,17 +13,20 @@ function Header() {
         </div>
       </Link>
       <nav className="flex space-x-4">
-
-        {/* New Link to Gosper Glider Gun page */}
+        {/* Link to the Gosper Glider Gun page */}
         <Link to="/gosper-glider-gun" className="text-blue-400 hover:underline">
           Gosper Glider Gun
         </Link>
-        
-        {/* Link to the about page */}
+
+        {/* New Link to Diagonal Ships page */}
+        <Link to="/diagonal-ships" className="text-blue-400 hover:underline">
+          Diagonal Ships
+        </Link>
+
+        {/* Link to the About page */}
         <Link to="/about" className="text-blue-400 hover:underline">
           About
         </Link>
-        
       </nav>
     </header>
   );
