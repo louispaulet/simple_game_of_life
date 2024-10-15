@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaInfoCircle, FaGlobe, FaRocket, FaSpaceShuttle, FaHome } from 'react-icons/fa';
+import { FaInfoCircle, FaGlobe, FaGlideG, FaSpaceShuttle, FaHome } from 'react-icons/fa';
 
 function About() {
   return (
@@ -22,7 +22,7 @@ function About() {
 
         {/* Link to the Gosper Glider Gun page */}
         <p className="text-lg mb-4 flex items-center">
-          <FaRocket className="mr-2" />
+          <FaGlideG className="mr-2" />
           The
           <Link to="/gosper-glider-gun" className="mx-1 text-blue-400 hover:underline">Gosper Glider Gun</Link>
           continuously emits gliders, which are small patterns that move diagonally across the grid.
