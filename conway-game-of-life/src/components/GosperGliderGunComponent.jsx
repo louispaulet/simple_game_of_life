@@ -32,20 +32,35 @@ const GosperGliderGunComponent = () => {
     }
   }, []);
 
-  const setupGosperGliderGun = (grid) => {
-    const gun = [
-      [1, 5], [1, 6], [2, 5], [2, 6],
-      [11, 5], [11, 6], [11, 7], [12, 4], [12, 8], [13, 3], [13, 9], [14, 3], [14, 9],
-      [15, 6], [16, 4], [16, 8], [17, 5], [17, 6], [17, 7], [18, 6],
-      [21, 3], [21, 4], [21, 5], [22, 3], [22, 4], [22, 5], [23, 2], [23, 6],
-      [25, 1], [25, 2], [25, 6], [25, 7],
-      [35, 3], [35, 4], [36, 3], [36, 4]
-    ];
+const setupGosperGliderGun = (grid) => {
+    const gunPattern = `
+........................O...........
+......................O.O...........
+............OO......OO............OO
+...........O...O....OO............OO
+OO........O.....O...OO..............
+OO........O...O.OO....O.O...........
+..........O.....O.......O...........
+...........O...O....................
+............OO......................
+`;
+    const gunArray = gunPattern.trim().split('\n').map(row =>
+        row.split('').map(cell => cell === 'O' ? 1 : 0)
+    );
 
-    gun.forEach(([x, y]) => {
-      grid[x][y] = 1;
-    });
-  };
+    // Coordinates where you want to place the gun
+    const startX = 0;
+    const startY = 0;
+
+    // Place the gun pattern onto the grid
+    for (let y = 0; y < gunArray.length; y++) {
+        for (let x = 0; x < gunArray[y].length; x++) {
+            if (gunArray[y][x] === 1) {
+                grid[startY + y][startX + x] = 1;
+            }
+        }
+    }
+};
 
   const startNewGame = () => {
     if (engine) {
