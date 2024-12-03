@@ -31,57 +31,102 @@ const DiagonalShipsComponent = () => {
     }
   }, []);
 
-const placeShip = (grid, shipCoordinates, xOffset, yOffset) => {
-  shipCoordinates.forEach(([x, y]) => {
-    grid[x + xOffset][y + yOffset] = 1;
-  });
-};
+  const placePattern = (grid, patternString, xOffset, yOffset) => {
+    const patternArray = patternString.trim().split('\n').map(row =>
+      row.split('').map(cell => (cell === 'O' ? 1 : 0))
+    );
 
-const setupDiagonalShips = (grid) => {
-  // Glider
-  const glider = [
-    [1, 0], [2, 1], [0, 2], [1, 2], [2, 2]
-  ];
-  placeShip(grid, glider, 5, 5);
+    for (let y = 0; y < patternArray.length; y++) {
+      for (let x = 0; x < patternArray[y].length; x++) {
+        if (patternArray[y][x] === 1) {
+          grid[yOffset + y][xOffset + x] = 1;
+        }
+      }
+    }
+  };
 
-  // Light-weight Spaceship (LWSS)
-  const lwss = [
-    [0, 1], [3, 1], [4, 2], [0, 3], [4, 3], [1, 4], [2, 4], [3, 4], [4, 4]
-  ];
-  placeShip(grid, lwss, 20, 5);
+  const setupDiagonalShips = (grid) => {
+    // Glider
+    const gliderPattern = `
+.O.
+..O
+OOO
+    `;
 
-  // Middle-weight Spaceship (MWSS)
-  const mwss = [
-    [0, 1], [3, 1], [4, 2], [0, 3], [4, 3], [1, 4], [2, 4], [3, 4], [4, 4], [2, 0]
-  ];
-  placeShip(grid, mwss, 35, 30);
+    // Light-weight Spaceship (LWSS)
+    const lwssPattern = `
+O..O.
+....O
+O...O
+.OOOO
+    `;
 
-  // Heavy-weight Spaceship (HWSS)
-  const hwss = [
-    [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [0, 2], [4, 2], [4, 3], [0, 3], [1, 4], [2, 4], [3, 4], [4, 4]
-  ];
-  placeShip(grid, hwss, 50, 100);
+    // Middle-weight Spaceship (MWSS)
+    const mwssPattern = `
+..O..
+O..O.
+....O
+O...O
+.OOOO
+    `;
 
-  // Custom Diagonal Ship
-  const customShip = [
-    [1, 0], [3, 0], [4, 1], [0, 2], [4, 2], [1, 3], [2, 3], [3, 3], [4, 3]
-  ];
-  placeShip(grid, customShip, 65, 5);
+    // Heavy-weight Spaceship (HWSS)
+    const hwssPattern = `
+    ..O..............O..................................O.....
+O..O..OOO.......O.OOOO...............OO...........OO.O....
+O..O............OOO.O.O.........O.....O.......O...O.......
+.O.O..O.....................OOO..O.O.OOO.....O.O.O....O...
+..OO......O....O................OOOOOO..O..O...O...O..O...
+.O.O...OO.....O...OO......OO.OO..O..OO..O.O.OO..O.........
+..O.....O.OO..O...OO......OO....O.O.O..O..O.O.O......OO..O
+..O....OOO..O.........OOO.......OOO.O.OO.....O.......OOO.O
+............OOOOOOOOO...O........OO.OOO...OOOO.........O.O
+..........................................................
+............OOOOOOOOO...O........OO.OOO...OOOO.........O.O
+..O....OOO..O.........OOO.......OOO.O.OO.....O.......OOO.O
+..O.....O.OO..O...OO......OO....O.O.O..O..O.O.O......OO..O
+.O.O...OO.....O...OO......OO.OO..O..OO..O.O.OO..O.........
+..OO......O....O................OOOOOO..O..O...O...O..O...
+.O.O..O.....................OOO..O.O.OOO.....O.O.O....O...
+O..O............OOO.O.O.........O.....O.......O...O.......
+O..O..OOO.......O.OOOO...............OO...........OO.O....
+..O..............O..................................O.....
+    `;
 
-  // New Custom Diagonal (Smaller pattern)
-  const customDiagonal = [
-    [0, 1], [1, 2], [2, 0], [2, 1], [2, 2]
-  ];
-  placeShip(grid, customDiagonal, 80, 5);
+    // Custom Diagonal Ship
+    const customShipPattern = `
+.O.O.
+....O
+O...O
+.OOOO
+    `;
 
-  // New Custom Diagonal Ship (Larger Glider-like)
-  const largeDiagonalShip = [
-    [1, 0], [2, 1], [0, 2], [1, 2], [2, 2], [3, 3], [4, 3], [5, 4], [3, 5]
-  ];
-  placeShip(grid, largeDiagonalShip, 95, 5);
-};
+    // New Custom Diagonal (Smaller pattern)
+    const customDiagonalPattern = `
+..O
+O.O
+.OO
+    `;
 
+    // New Custom Diagonal Ship (Larger Glider-like)
+    const largeDiagonalShipPattern = `
+.O....
+..O...
+OOO...
+...OO.
+.....O
+...O..
+    `;
 
+    // Place the patterns onto the grid with specified offsets
+    placePattern(grid, gliderPattern, 5, 5);
+    placePattern(grid, lwssPattern, 20, 5);
+    placePattern(grid, mwssPattern, 35, 30);
+    placePattern(grid, hwssPattern, 50, 100);
+    placePattern(grid, customShipPattern, 65, 5);
+    placePattern(grid, customDiagonalPattern, 80, 5);
+    placePattern(grid, largeDiagonalShipPattern, 95, 5);
+  };
 
   const startNewSimulation = () => {
     if (engine) {
@@ -94,9 +139,12 @@ const setupDiagonalShips = (grid) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <canvas ref={canvasRef} className="border-2 border-blue-400 bg-gray-800 mx-auto my-5"></canvas>
-      <button 
-        onClick={startNewSimulation} 
+      <canvas
+        ref={canvasRef}
+        className="border-2 border-blue-400 bg-gray-800 mx-auto my-5"
+      ></canvas>
+      <button
+        onClick={startNewSimulation}
         className="mt-3 px-6 py-3 text-lg bg-blue-400 text-gray-900 rounded hover:bg-blue-300"
       >
         Start New Simulation
