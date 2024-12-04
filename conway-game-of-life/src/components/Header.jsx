@@ -1,3 +1,5 @@
+// Header.js
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -21,6 +23,11 @@ function Header() {
         {/* New Link to Diagonal Ships page */}
         <Link to="/diagonal-ships" className="text-blue-400 hover:underline">
           Diagonal Ships
+        </Link>
+
+        {/* Link to the Pattern Explorer page */}
+        <Link to="/patterns" className="text-blue-400 hover:underline">
+          Pattern Explorer
         </Link>
 
         {/* Link to the About page */}
