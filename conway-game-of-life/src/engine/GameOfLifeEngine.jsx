@@ -1,3 +1,5 @@
+// GameOfLifeEngine.js
+
 class GameOfLifeEngine {
   constructor(canvas) {
     this.canvas = canvas;
@@ -6,8 +8,8 @@ class GameOfLifeEngine {
     this.cols = 0;
     this.rows = 0;
     this.grid = [];
-    this.animationId = null;
-    this.initCanvas();  // Initialize the canvas when the engine is created
+    this.animationId = null; // Store the animation frame ID
+    this.initCanvas(); // Initialize the canvas when the engine is created
   }
 
   initCanvas() {
@@ -15,7 +17,7 @@ class GameOfLifeEngine {
     this.canvas.height = window.innerHeight - 100;
     this.cols = Math.floor(this.canvas.width / this.cellSize);
     this.rows = Math.floor(this.canvas.height / this.cellSize);
-    this.grid = this.createGrid();  // Make sure the grid is created after initializing canvas size
+    this.grid = this.createGrid(); // Make sure the grid is created after initializing canvas size
   }
 
   createGrid() {
@@ -41,7 +43,12 @@ class GameOfLifeEngine {
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         if (this.grid[i][j] === 1) {
-          this.ctx.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize - 1, this.cellSize - 1);
+          this.ctx.fillRect(
+            i * this.cellSize,
+            j * this.cellSize,
+            this.cellSize - 1,
+            this.cellSize - 1
+          );
         }
       }
     }
@@ -66,36 +73,43 @@ class GameOfLifeEngine {
     }
 
     this.grid = newGrid;
-    this.drawGrid();  // Draw the updated grid
+    this.drawGrid(); // Draw the updated grid
   }
 
   countNeighbors(x, y) {
-  let sum = 0;
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      let col = x + i;
-      let row = y + j;
+    let sum = 0;
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        let col = x + i;
+        let row = y + j;
 
-      // Skip counting neighbors outside the grid boundaries
-      if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
-        sum += this.grid[col][row];
+        // Skip counting neighbors outside the grid boundaries
+        if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
+          sum += this.grid[col][row];
+        }
       }
     }
+    sum -= this.grid[x][y]; // Subtract the cell itself from the neighbor count
+    return sum;
   }
-  sum -= this.grid[x][y]; // Subtract the cell itself from the neighbor count
-  return sum;
-}
-
 
   gameLoop() {
     this.updateGrid();
     this.animationId = requestAnimationFrame(() => this.gameLoop());
   }
 
+  // Add the stopSimulation method
+  stopSimulation() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+  }
+
   startNewGame() {
     this.randomizeGrid();
-    cancelAnimationFrame(this.animationId);  // Stop any ongoing animation
-    this.gameLoop();  // Start the game loop
+    this.stopSimulation(); // Use the new stopSimulation method
+    this.gameLoop(); // Start the game loop
   }
 }
 

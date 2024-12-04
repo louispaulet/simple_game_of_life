@@ -31,30 +31,50 @@ const DiagonalShipsComponent = () => {
     }
   }, []);
 
-  const placePattern = (
-    grid,
-    patternString,
-    xOffset,
-    yOffset,
-    rotation = 0
-  ) => {
-    let patternArray = patternString
-      .trim()
-      .split('\n')
-      .map((row) => row.split('').map((cell) => (cell === 'O' ? 1 : 0)));
+const placePattern = (
+  grid,
+  patternString,
+  xOffset,
+  yOffset,
+  rotation = 0
+) => {
+  let patternArray = patternString
+    .trim()
+    .split('\n')
+    .map((row) => row.split('').map((cell) => (cell === 'O' ? 1 : 0)));
 
-    // Rotate the pattern array based on the rotation parameter
-    patternArray = rotatePattern(patternArray, rotation);
+  // Rotate the pattern array based on the rotation parameter
+  patternArray = rotatePattern(patternArray, rotation);
 
-    // Place the rotated pattern onto the grid
-    for (let y = 0; y < patternArray.length; y++) {
-      for (let x = 0; x < patternArray[y].length; x++) {
-        if (patternArray[y][x] === 1) {
-          grid[yOffset + y][xOffset + x] = 1;
-        }
+  const gridHeight = grid.length;
+  const gridWidth = grid[0].length;
+  const patternHeight = patternArray.length;
+  const patternWidth = patternArray[0].length;
+
+  // Check if the pattern fits within the grid boundaries
+  if (
+    yOffset < 0 ||
+    xOffset < 0 ||
+    yOffset + patternHeight > gridHeight ||
+    xOffset + patternWidth > gridWidth
+  ) {
+    console.warn(
+      `Pattern does not fit at position (${xOffset}, ${yOffset}). Skipping this pattern.`
+    );
+    return; // Skip placing this pattern
+  }
+
+  // Place the rotated pattern onto the grid
+  for (let y = 0; y < patternHeight; y++) {
+    for (let x = 0; x < patternWidth; x++) {
+      if (patternArray[y][x] === 1) {
+        grid[yOffset + y][xOffset + x] = 1;
       }
     }
-  };
+  }
+};
+
+
 
   const rotatePattern = (patternArray, rotation) => {
     rotation = rotation % 4; // Ensure rotation is between 0 and 3
